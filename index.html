@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brawl Stars - Бойцы и Онлайн</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0c29;
+            color: #fff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo h1 {
+            color: #ffd700;
+            font-size: 32px;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            margin: 0;
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link:hover {
+            background: #ffd700;
+            color: #1a1a2e;
+            transform: translateY(-3px);
+        }
+
+        /* BRAWLERS SECTION */
+        .brawlers-section {
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 48px;
+            color: #ffd700;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 40px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .filter-buttons button {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-buttons button:hover,
+        .filter-buttons button.active {
+            background: #ffd700;
+            color: #1a1a2e;
+            transform: scale(1.05);
+        }
+
+        .brawlers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .brawler-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px solid;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .brawler-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .brawler-icon {
+            font-size: 80px;
+            margin-bottom: 15px;
+        }
+
+        .brawler-name {
+            font-size: 24px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .brawler-stats {
+            margin-top: 15px;
+            color: #fff;
+        }
+
+        .brawler-stats p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        /* ONLINE SECTION */
+        .online-section {
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+        }
+
+        .online-counter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .counter-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 60px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .counter-card:hover {
+            transform: scale(1.05);
+        }
+
+        .counter-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .counter-card h3 {
+            color: #fff;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        .counter-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .top-players {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .top-title {
+            text-align: center;
+            font-size: 32px;
+            color: #ffd700;
+            margin-bottom: 30px;
+        }
+
+        .players-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .player-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .player-item:hover {
+            transform: translateX(10px);
+            border-color: #ffd700;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .player-rank {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffd700;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .player-info {
+            flex: 1;
+        }
+
+        .player-info h4 {
+            color: #fff;
+            font-size: 20px;
+            margin: 0 0 5px 0;
+        }
+
+        .player-trophies {
+            color: #ffd700;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .player-status {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .player-status.in-game {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .player-status.online {
+            background: #44ff44;
+            color: #000;
+        }
+
+        .player-status.lobby {
+            background: #ffaa44;
+            color: #000;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .logo h1 {
+                font-size: 24px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+            
+            .counter-card {
+                padding: 30px 40px;
+            }
+            
+            .counter-number {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>BRAWL STARS</h1>
+            </div>
+            <nav class="nav">
+                <a href="#home" class="nav-link">Главная</a>
+                <a href="#brawlers" class="nav-link">Бойцы</a>
+                <a href="#online" class="nav-link">Онлайн</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- BRAWLERS SECTION -->
+    <section id="brawlers" class="brawlers-section">
+        <h2 class="section-title">БОЙЦЫ</h2>
+        
+        <div class="filter-buttons">
+            <button onclick="filterBrawlers('all')" class="active" id="btn-all">Все</button>
+            <button onclick="filterBrawlers('common')" id="btn-common">Обычные</button>
+            <button onclick="filterBrawlers('rare')" id="btn-rare">Редкие</button>
+            <button onclick="filterBrawlers('super-rare')" id="btn-super-rare">Супер редкие</button>
+            <button onclick="filterBrawlers('legendary')" id="btn-legendary">Легендарные</button>
+        </div>
+
+        <div class="brawlers-grid" id="brawlers-grid">
+            <!-- Бойцы будут добавлены через JavaScript -->
+        </div>
+    </section>
+
+    <!-- ONLINE SECTION -->
+    <section id="online" class="online-section">
+        <h2 class="section-title">ОНЛАЙН</h2>
+        
+        <div class="online-counter">
+            <div class="counter-card">
+                <div class="counter-icon">👥</div>
+                <h3>Игроков онлайн</h3>
+                <p class="counter-number" id="online-count">12847</p>
+            </div>
+        </div>
+
+        <div class="top-players">
+            <h3 class="top-title">🏆 ТОП ИГРОКОВ</h3>
+            <div class="players-list" id="players-list">
+                <!-- Игроки будут добавлены через JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // ДАННЫЕ БОЙЦОВ
+        const brawlers = [
+            { id: 1, name: 'Шелли', rarity: 'common', hp: 3600, damage: 300, img: '🔫' },
+            { id: 2, name: 'Кольт', rarity: 'common', hp: 2400, damage: 360, img: '🎯' },
+            { id: 3, name: 'Ниту', rarity: 'common', hp: 3000, damage: 820, img: '🐻' },
+            { id: 4, name: 'Булл', rarity: 'common', hp: 5000, damage: 440, img: '🐂' },
+            { id: 5, name: 'Эль Примо', rarity: 'rare', hp: 7000, damage: 360, img: '💪' },
+            { id: 6, name: 'Барли', rarity: 'rare', hp: 2400, damage: 800, img: '🍺' },
+            { id: 7, name: 'Рико', rarity: 'rare', hp: 2400, damage: 440, img: '🤖' },
+            { id: 8, name: 'Поко', rarity: 'super-rare', hp: 3600, damage: 800, img: '🎸' },
+            { id: 9, name: 'Роза', rarity: 'super-rare', hp: 6200, damage: 440, img: '🌹' },
+            { id: 10, name: 'Джесси', rarity: 'super-rare', hp: 3400, damage: 840, img: '🔧' },
+            { id: 11, name: 'Спайк', rarity: 'legendary', hp: 2800, damage: 520, img: '🌵' },
+            { id: 12, name: 'Ворон', rarity: 'legendary', hp: 3000, damage: 400, img: '🦅' },
+            { id: 13, name: 'Леон', rarity: 'legendary', hp: 3200, damage: 440, img: '🦎' },
+        ];
+
+        // ДАННЫЕ ИГРОКОВ
+        const players = [
+            { id: 1, name: 'ProGamer2024', trophies: 25000, status: 'in-game' },
+            { id: 2, name: 'MegaStar', trophies: 23450, status: 'online' },
+            { id: 3, name: 'NoobMaster', trophies: 21300, status: 'in-game' },
+            { id: 4, name: 'CrazyBrawler', trophies: 20100, status: 'online' },
+            { id: 5, name: 'StarPlayer', trophies: 19800, status: 'lobby' },
+            { id: 6, name: 'BrawlKing', trophies: 18500, status: 'online' },
+            { id: 7, name: 'NinjaWarrior', trophies: 17200, status: 'in-game' },
+        ];
+
+        // ЦВЕТА РЕДКОСТИ
+        function getRarityColor(rarity) {
+            switch(rarity) {
+                case 'common': return '#32cd32';
+                case 'rare': return '#1e90ff';
+                case 'super-rare': return '#9370db';
+                case 'legendary': return '#ffd700';
+                default: return '#fff';
+            }
+        }
+
+        // ОТРИСОВКА БОЙЦОВ
+        function renderBrawlers(filter = 'all') {
+            const grid = document.getElementById('brawlers-grid');
+            const filtered = filter === 'all' ? brawlers : brawlers.filter(b => b.rarity === filter);
+            
+            grid.innerHTML = filtered.map(brawler => `
+                <div class="brawler-card" style="border-color: ${getRarityColor(brawler.rarity)}">
+                    <div class="brawler-icon">${brawler.img}</div>
+                    <h3 class="brawler-name" style="color: ${getRarityColor(brawler.rarity)}">${brawler.name}</h3>
+                    <div class="brawler-stats">
+                        <p>❤️ HP: ${brawler.hp}</p>
+                        <p>⚔️ Урон: ${brawler.damage}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ФИЛЬТР БОЙЦОВ
+        function filterBrawlers(rarity) {
+            // Убираем active со всех кнопок
+            document.querySelectorAll('.filter-buttons button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Добавляем active на текущую
+            document.getElementById(`btn-${rarity}`).classList.add('active');
+            
+            // Рендерим
+            renderBrawlers(rarity);
+        }
+
+        // ОТРИСОВКА ИГРОКОВ
+        function renderPlayers() {
+            const list = document.getElementById('players-list');
+            
+            list.innerHTML = players.map((player, index) => `
+                <div class="player-item">
+                    <div class="player-rank">#${index + 1}</div>
+                    <div class="player-info">
+                        <h4>${player.name}</h4>
+                        <p class="player-trophies">🏆 ${player.trophies.toLocaleString()}</p>
+                    </div>
+                    <div class="player-status ${player.status}">
+                        ${player.status === 'in-game' ? 'В бою' : player.status === 'online' ? 'Онлайн' : 'В лобби'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // АНИМАЦИЯ ОНЛАЙНА
+        function animateOnline() {
+            const counter = document.getElementById('online-count');
+            let count = 12847;
+            
+            setInterval(() => {
+                count += Math.floor(Math.random() * 20 - 10);
+                if (count < 10000) count = 10000;
+                if (count > 20000) count = 20000;
+                counter.textContent = count.toLocaleString();
+            }, 3000);
+        }
+
+        // ИНИЦИАЛИЗАЦИЯ
+        renderBrawlers();
+        renderPlayers();
+        animateOnline();
+    </script>
+
+</body>
+</html>
